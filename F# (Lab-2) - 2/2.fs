@@ -3,8 +3,7 @@
 // Функция для подсчета строк заданной длины
 let countStringsOfLength (length: int) (strings: string list) =
     strings
-    |> List.filter (fun str -> String.length str = length)
-    |> List.length
+    |> List.fold (fun acc str -> if String.length str = length then acc + 1 else acc) 0
 
 // Функция для ввода списка строк с клавиатуры
 let getManualStrings count =
@@ -15,7 +14,7 @@ let getManualStrings count =
 // Функция для генерации случайной строки длиной от 1 до 10 символов
 let generateRandomString() =
     let rnd = Random()
-    let length = rnd.Next(1, 11) // Случайная длина от 1 до 10
+    let length = rnd.Next(1, 11)
     let chars = Array.concat[[|'a'..'z'|];[|'A'..'Z'|]]
     let randomChars = Array.init length (fun _ -> chars.[rnd.Next(chars.Length)])
     String(randomChars)
@@ -32,16 +31,16 @@ let rec getStrings count =
     | "2" -> getRandomStrings count
     | _ ->
         printfn "Некорректный выбор. Попробуйте еще раз."
-        getStrings count // Рекурсивный вызов для повторного запроса
+        getStrings count
 
 // Функция для ввода длины строки для подсчета
 let rec getTargetLength() =
-    printf "Введите длину строки для подсчета (от 1 до 5): "
+    printf "Введите длину строки для подсчета (от 1 до 10): "
     match Int32.TryParse(Console.ReadLine()) with
-    | true, value when value >= 1 && value <= 5 -> value
+    | true, value when value >= 1 && value <= 10 -> value
     | _ -> 
-        printfn "Некорректный ввод. Длина должна быть от 1 до 5. Попробуйте еще раз."
-        getTargetLength() // Рекурсивный вызов для повторного запроса
+        printfn "Некорректный ввод. Длина должна быть от 1 до 10. Попробуйте еще раз."
+        getTargetLength() 
 
 // Функция для ввода количества строк
 let rec getCount() =
@@ -50,7 +49,7 @@ let rec getCount() =
     | true, value when value > 0 -> value
     | _ -> 
         printfn "Некорректный ввод. Попробуйте еще раз."
-        getCount() // Рекурсивный вызов для повторного запроса
+        getCount() 
 
 // Основная функция программы
 let main() =
